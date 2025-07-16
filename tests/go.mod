@@ -1,6 +1,6 @@
 module github.com/atombender/go-jsonschema/tests
 
-go 1.23.0
+go 1.24
 
 replace (
 	github.com/atombender/go-jsonschema => ../
@@ -21,7 +21,6 @@ require (
 	github.com/davecgh/go-spew v1.1.1 // indirect
 	github.com/goccy/go-yaml v1.18.0 // indirect
 	github.com/mitchellh/go-wordwrap v1.0.1 // indirect
-	github.com/pkg/errors v0.9.1 // indirect
 	github.com/pmezard/go-difflib v1.0.0 // indirect
 	github.com/sanity-io/litter v1.5.8 // indirect
 	github.com/sosodev/duration v1.3.1 // indirect
