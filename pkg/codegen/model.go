@@ -45,6 +45,7 @@ type Package struct {
 	Comment       string
 	Decls         []Decl
 	Imports       []Import
+	SortField     bool
 }
 
 func (p *Package) AddDecl(d Decl) {
@@ -95,7 +96,7 @@ func (p *Package) Generate(out *Emitter) error {
 	out.Comment(p.Comment)
 	out.Printlnf("package %s", p.Name())
 
-	if len(p.Imports) > 0 {
+	if len(p.Imports) > 0 && p.SortField {
 		slices.SortStableFunc(p.Imports, func(i, j Import) int {
 			if i.QualifiedName < j.QualifiedName {
 				return -1
@@ -119,15 +120,17 @@ func (p *Package) Generate(out *Emitter) error {
 
 	sorted := make([]Decl, len(p.Decls))
 	copy(sorted, p.Decls)
-	sort.Slice(sorted, func(i, j int) bool {
-		if a, ok := sorted[i].(Named); ok {
-			if b, ok := sorted[j].(Named); ok {
-				return schemas.CleanNameForSorting(a.GetName()) < schemas.CleanNameForSorting(b.GetName())
+	if p.SortField {
+		sort.Slice(sorted, func(i, j int) bool {
+			if a, ok := sorted[i].(Named); ok {
+				if b, ok := sorted[j].(Named); ok {
+					return schemas.CleanNameForSorting(a.GetName()) < schemas.CleanNameForSorting(b.GetName())
+				}
 			}
-		}
 
-		return false
-	})
+			return false
+		})
+	}
 
 	for i, t := range sorted {
 		if i > 0 {

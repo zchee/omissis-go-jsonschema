@@ -1,11 +1,11 @@
 package generator
 
 import (
+	"errors"
 	"fmt"
 	"reflect"
 	"strings"
 
-	"github.com/pkg/errors"
 	"github.com/sanity-io/litter"
 	"github.com/sosodev/duration"
 
@@ -146,6 +146,7 @@ type defaultValidator struct {
 	fieldName        string
 	defaultValueType codegen.Type
 	defaultValue     interface{}
+	sortField        bool
 }
 
 func (v *defaultValidator) generate(out *codegen.Emitter, format string) error {
@@ -169,7 +170,7 @@ func (v *defaultValidator) dumpDefaultValueAssignment(out *codegen.Emitter) (any
 			dvm, ok := v.defaultValue.(map[string]any)
 			if ok {
 				namedFields := ""
-				for _, k := range sortedKeys(dvm) {
+				for _, k := range sortedKeys(dvm, v.sortField) {
 					namedFields += fmt.Sprintf("\n%s: %s,", upperFirst(k), litter.Sdump(dvm[k]))
 				}
 

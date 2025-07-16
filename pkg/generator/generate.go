@@ -201,6 +201,7 @@ func (g *Generator) beginOutput(
 
 	pkg := codegen.Package{
 		QualifiedName: packageName,
+		SortField:     g.config.SortField,
 	}
 
 	output := &output{

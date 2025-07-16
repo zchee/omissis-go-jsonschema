@@ -1,7 +1,7 @@
 package generator
 
 import (
-	"sort"
+	"slices"
 
 	"github.com/atombender/go-jsonschema/pkg/codegen"
 	"github.com/atombender/go-jsonschema/pkg/schemas"
@@ -9,25 +9,29 @@ import (
 
 const additionalProperties = "AdditionalProperties"
 
-func sortedKeys[T any](props map[string]T) []string {
+func sortedKeys[T any](props map[string]T, sortField bool) []string {
 	names := make([]string, 0, len(props))
 	for name := range props {
 		names = append(names, name)
 	}
 
-	sort.Strings(names)
+	if sortField {
+		slices.Sort(names)
+	}
 
 	return names
 }
 
-func sortDefinitionsByName(defs schemas.Definitions) []string {
+func sortDefinitionsByName(defs schemas.Definitions, sortField bool) []string {
 	names := make([]string, 0, len(defs))
 
 	for name := range defs {
 		names = append(names, name)
 	}
 
-	sort.Strings(names)
+	if sortField {
+		slices.Sort(names)
+	}
 
 	return names
 }

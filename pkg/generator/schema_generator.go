@@ -47,7 +47,7 @@ func (g *schemaGenerator) generateRootType() error {
 		return errSchemaHasNoRoot
 	}
 
-	for _, name := range sortDefinitionsByName(g.schema.Definitions) {
+	for _, name := range sortDefinitionsByName(g.schema.Definitions, g.config.SortField) {
 		def := g.schema.Definitions[name]
 
 		_, err := g.generateDeclaredType(def, newNameScope(g.caser.Identifierize(name)))
@@ -339,6 +339,7 @@ func (g *schemaGenerator) generateDeclaredType(t *schemas.Type, scope nameScope)
 					fieldName:        f.Name,
 					defaultValueType: f.Type,
 					defaultValue:     f.DefaultValue,
+					sortField:        g.config.SortField,
 				})
 			}
 
@@ -675,7 +676,7 @@ func (g *schemaGenerator) generateStructType(t *schemas.Type, scope nameScope) (
 
 	var structType codegen.StructType
 
-	for _, name := range sortedKeys(t.Properties) {
+	for _, name := range sortedKeys(t.Properties, g.config.SortField) {
 		if err := g.addStructField(&structType, t, scope, name, uniqueNames, requiredNames); err != nil {
 			return nil, err
 		}

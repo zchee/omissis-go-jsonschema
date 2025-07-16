@@ -40,6 +40,8 @@ type Config struct {
 	// DisableCustomTypesForMaps configures the generator to avoid creating a custom type for maps,
 	// and to use the map type directly.
 	DisableCustomTypesForMaps bool
+	// SortField configures the generator to sort fields in the generated structs.
+	SortField bool
 }
 
 type SchemaMapping struct {
