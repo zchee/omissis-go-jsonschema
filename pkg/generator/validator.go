@@ -145,7 +145,7 @@ type defaultValidator struct {
 	jsonName         string
 	fieldName        string
 	defaultValueType codegen.Type
-	defaultValue     interface{}
+	defaultValue     any
 	sortField        bool
 }
 
@@ -239,7 +239,7 @@ func (v *defaultValidator) tryDumpDefaultSlice(maxLineLen int32) (string, error)
 	kind := reflect.ValueOf(v.defaultValue).Kind()
 
 	if kind == reflect.Slice {
-		df, ok := v.defaultValue.([]interface{})
+		df, ok := v.defaultValue.([]any)
 		if !ok {
 			return "", errors.New("invalid default value")
 		}
